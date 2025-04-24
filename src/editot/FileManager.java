@@ -28,11 +28,22 @@ public class FileManager {
         if (textEditor.currentFile == null){
             JFileChooser fileChooser = new JFileChooser();
             if (fileChooser.showSaveDialog(textEditor) == JFileChooser.APPROVE_OPTION) {
-                //TODO
+                textEditor.currentFile = fileChooser.getSelectedFile();
+                saveToFile(textEditor.currentFile, textArea.getText(), textEditor);
+                textEditor.setTitle("Simple Text Editor - " + textEditor.currentFile.getName());
             }
+        } else {
+            saveToFile(textEditor.currentFile, textArea.getText(), textEditor);
         }
-        else{
-            //TODO
+    }
+
+    private static void saveToFile(File file, String content, editor.TextEditor textEditor) {
+        try {
+            Files.write(file.toPath(), content.getBytes());
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(textEditor,
+                    "Error saving file: " + e.getMessage(),
+                    "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
